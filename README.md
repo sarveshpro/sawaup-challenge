@@ -38,6 +38,10 @@ There are no APIs as such. The application uses the Prisma ORM to query the data
 
 The application uses the `useEffect` hook to filter the courses based on the selected skills. The `useEffect` hook is called every time the selected skills change. Inside the hook function courses are filtered based on total number of matched skills. A step by step explaination is present in the `pages/index.tsx` file.
 
+## Lighthouse Metrics
+
+![Screenshot 2023-01-06 at 12 28 42 AM](https://user-images.githubusercontent.com/27153515/210860351-83b288b4-f186-4af3-bd45-46208043cac4.png)
+
 ## Things I wanted to implement
 
 - [ ] Fetch video thumbnail from youtube
