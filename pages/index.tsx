@@ -1,32 +1,68 @@
-import { AppBar, Box, Drawer, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Drawer, IconButton, Toolbar, Typography } from '@mui/material';
 import { GetStaticProps } from 'next';
 import React from 'react';
 import NextHead from '../Components/Head';
 import prisma from '../lib/prisma';
 import MenuIcon from '@mui/icons-material/Menu';
+import Carousel from '../Components/Carousel';
 
 const drawerWidth = 280;
 
+// TODO: Get video thumbnail from youtube url
+// TODO: allow add to favorites
+
 interface Props {
-  courses: {
-    id: number;
-    name: string;
-    url: string;
-    skills: {
-      id: number;
-      name: string;
-    }[];
-  }[];
-  skills: {
-    id: number;
-    name: string;
-  }[];
+  courses: Sawaup.Course[];
+  skills: Sawaup.Skill[];
 }
 
 export default function Home({ courses, skills }: Props) {
   console.log('courses', courses)
   const containerRef = React.useRef(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [selectedSkills, setSelectedSkills] = React.useState<number[]>([]);
+  const [filteredCourses, setFilteredCourses] = React.useState<Sawaup.Course[]>([]);
+
+  // filter courses based on selected skills
+  // each course has a list of skills
+  // min 2 skills to be selected
+  // max 4 courses to be displayed
+  React.useEffect(() => {
+    // min 2 skills to be selected
+    if (selectedSkills.length > 1) {
+      let coursesMatched: { course: Sawaup.Course, skillsMatched: number }[] = [];
+      courses.map((course) => {
+        // get list of skills for each course
+        const courseSkills = course.skills.map((skill) => skill.id);
+        // get no of skills that match
+        const skillsMatched = courseSkills.filter((skill) => selectedSkills.includes(skill));
+        // add course and no of skills matched to array
+        coursesMatched.push({ course, skillsMatched: skillsMatched.length });
+      });
+      // sort courses by no of skills matched
+      coursesMatched.sort((a, b) => b.skillsMatched - a.skillsMatched);
+      // get top 4 courses
+      const topCourses = coursesMatched.map((course) => course.course).slice(0, 4);
+      setFilteredCourses(topCourses);
+    } else {
+      setFilteredCourses([]);
+    }
+  }, [selectedSkills, courses]);
+
+  // allow max 4 skills to be selected
+  const handleSkillClick = (skillId: number) => {
+    if (selectedSkills.includes(skillId)) {
+      setSelectedSkills(selectedSkills.filter((id) => id !== skillId));
+    } else {
+      if (selectedSkills.length < 10) {
+        setSelectedSkills([...selectedSkills, skillId]);
+      }
+    }
+  };
+
+  const isSkillSelected = (skillId: number) => {
+    return selectedSkills.includes(skillId);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -37,11 +73,13 @@ export default function Home({ courses, skills }: Props) {
       <Typography variant="h6" gutterBottom component="div">
         Skills
       </Typography>
-      <Box sx={{ ml: 2 }}>
+      <Box>
         {skills.map((skill) => (
-          <Typography key={skill.id} variant="body2" gutterBottom component="div">
-            {skill.name}
-          </Typography>
+          <Button key={skill.id} variant={isSkillSelected(skill.id) ? 'contained' : 'outlined'} sx={{ mb: 1, mr: 1, pt: 1, pb: 1 }} onClick={() => handleSkillClick(skill.id)}>
+            <Typography key={skill.id} variant="body2" component="div">
+              {skill.name}
+            </Typography>
+          </Button>
         ))}
       </Box>
     </Box>
@@ -102,18 +140,21 @@ export default function Home({ courses, skills }: Props) {
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, mt: 12, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{ flexGrow: 1, p: 3, mt: 12, width: { width: '100%', sm: `calc(100% - ${drawerWidth}px)` } }}
       >
+
+        <Typography variant="h4" gutterBottom component="div">
+          Customized Courses
+        </Typography>
+        {filteredCourses.length === 0 ? <Typography variant="body1" gutterBottom component="div">Select minimum 2 skills to see customized courses</Typography>
+          :
+          <Carousel courses={filteredCourses} />}
         <Toolbar />
-        <Box sx={{ mt: 12 }}>
-          {courses.map((course) => (
-            <Box key={course.id} sx={{ mb: 2 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                {course.name}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
+        <Typography variant="h4" gutterBottom component="div">
+          All Courses
+        </Typography>
+        <Carousel courses={courses} />
+
       </Box>
     </Box>
   )

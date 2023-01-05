@@ -14,3 +14,39 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.courseCard {
+  display: flex;
+  flex-direction: column;
+  padding-right: 20px;
+}
+
+.content {
+  background-color: antiquewhite;
+  height: 200px;
+  padding: 10px;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 800px;
+}
+
+.slick-prev {
+  z-index: 100;
+  left: 20px !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: black !important;
+}
+
+.slick-next {
+  z-index: 100;
+  right: 20px !important;
+}
