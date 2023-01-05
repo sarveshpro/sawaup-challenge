@@ -1,34 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## SawaUp Challenge
 
-## Getting Started
+This application gives the user the ability to select skills and see the courses curated by SawaUp.
 
-First, run the development server:
+## Requirements
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- Node.js
+- NPM
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Installation
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository
+2. Run `npm install` to install the dependencies
+3. Run `npm run build` to build the application
+4. Run `npm run dev` to start the application
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Application Structure
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+The application is built using NextJS and Prisma. The application is structured as follows:
 
-## Learn More
+- `components` - Contains the components used in the application
+- `pages` - Contains the pages of the application
+- `public` - Contains the static files of the application
+- `styles` - Contains the styles of the application
+- `types` - Contains the types used in the application
+- `prisma` - Contains the database schema and migrations
+- `lib` - Contains the helper functions used in the application
 
-To learn more about Next.js, take a look at the following resources:
+## Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The database is a sqlite db file inside the `prisma` folder. The database schema is defined in the `prisma/schema.prisma` file. The database migrations are defined in the `prisma/migrations` folder.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## API
 
-## Deploy on Vercel
+There are no APIs as such. The application uses the Prisma ORM to query the database. If I would have chose to store selected skills and favorite courses in the database I would have used the next `pages/api` folder, but as sqlite data would be lost on every build anyway. I did not implement this feature.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Filtering Courses based om selected skills
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The application uses the `useEffect` hook to filter the courses based on the selected skills. The `useEffect` hook is called every time the selected skills change. Inside the hook function courses are filtered based on total number of matched skills. A step by step explaination is present in the `pages/index.tsx` file.
+
+## Things I wanted to implement
+
+- [ ] Fetch video thumbnail from youtube
+- [ ] Implement a better UI
+- [ ] Persist selected skills and favourites in db in a separate table similar to user preferences
