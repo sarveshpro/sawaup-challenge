@@ -16,8 +16,11 @@ interface Props {
 }
 
 export default function Home({ courses, skills }: Props) {
-  console.log('courses', courses)
+
+  // container ref for drawer
   const containerRef = React.useRef(null);
+
+  // states for mobile drawer, selected skills, filtered courses, favourite courses
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [selectedSkills, setSelectedSkills] = React.useState<number[]>([]);
   const [filteredCourses, setFilteredCourses] = React.useState<Sawaup.Course[]>([]);
@@ -49,7 +52,7 @@ export default function Home({ courses, skills }: Props) {
     }
   }, [selectedSkills, courses]);
 
-  // allow max 4 skills to be selected
+  // allow max 10 skills to be selected
   const handleSkillClick = (skillId: number) => {
     if (selectedSkills.includes(skillId)) {
       setSelectedSkills(selectedSkills.filter((id) => id !== skillId));
@@ -60,14 +63,17 @@ export default function Home({ courses, skills }: Props) {
     }
   };
 
+  // check if skill is selected
   const isSkillSelected = (skillId: number) => {
     return selectedSkills.includes(skillId);
   };
 
+  // toggle mobile drawer
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  // drawer content
   const drawer = (
     <Box sx={{ mt: 12, ml: 2 }}>
       <Typography variant="h6" gutterBottom component="div">
@@ -167,6 +173,7 @@ export default function Home({ courses, skills }: Props) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
+  // get courses and skills from db
   const courses = await prisma.course.findMany(
     {
       include: {
@@ -177,6 +184,6 @@ export const getStaticProps: GetStaticProps = async () => {
   const skills = await prisma.skill.findMany();
   return {
     props: { courses, skills },
-    revalidate: 10,
+    revalidate: 10, // In seconds
   };
 };

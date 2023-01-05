@@ -27,6 +27,12 @@ a {
   height: 200px;
   padding: 10px;
   position: relative;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+}
+
+.content:hover {
+  background-color: aliceblue;
 }
 
 .modal {

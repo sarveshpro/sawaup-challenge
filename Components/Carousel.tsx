@@ -12,43 +12,52 @@ type Props = {
     setFavoriteCourseIds: React.Dispatch<React.SetStateAction<number[]>>
 }
 
-// React component to display a carousel of courses, 3 at a time, with arrows to scroll and use Material UI components
 export default function Carousel({
     courses,
     favouriteCourseIds,
     setFavoriteCourseIds
 }: Props) {
+
+    // states for mobile view, modal open, video url
     const [isMobile, setIsMobile] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [videoUrl, setVideoUrl] = React.useState('');
 
+    // check if mobile view
     React.useEffect(() => {
         setIsMobile(window.innerWidth < 600);
     }, []);
 
+    // handle video click
     const handleVideoClick = (url: string) => {
         setVideoUrl(url);
         setOpen(true);
     }
 
+    // handle modal close
     const handleModalClose = () => {
         setVideoUrl('');
         setOpen(false);
     }
 
+    // handle favourite click
     const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, courseId: number) => {
-        e.stopPropagation();
+        e.stopPropagation(); // prevent video click
+        // if course is favourite, remove from favourite list
         if (favouriteCourseIds.includes(courseId)) {
             setFavoriteCourseIds(favouriteCourseIds.filter((id) => id !== courseId));
         } else {
+            // else add to favourite list
             setFavoriteCourseIds([...favouriteCourseIds, courseId]);
         }
     }
 
+    // check if course is favourite
     const isFavorite = (courseId: number) => {
         return favouriteCourseIds.includes(courseId);
     }
 
+    // settings for carousel
     const settings = {
         infinite: true,
         speed: 500,
