@@ -34,7 +34,7 @@ The database is a sqlite db file inside the `prisma` folder. The database schema
 
 There are no APIs as such. The application uses the Prisma ORM to query the database. If I would have chose to store selected skills and favorite courses in the database I would have used the next `pages/api` folder, but as sqlite data would be lost on every build anyway. I did not implement this feature.
 
-## Filtering Courses based om selected skills
+## Filtering Courses based on selected skills
 
 The application uses the `useEffect` hook to filter the courses based on the selected skills. The `useEffect` hook is called every time the selected skills change. Inside the hook function courses are filtered based on total number of matched skills. A step by step explaination is present in the `pages/index.tsx` file.
 

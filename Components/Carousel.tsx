@@ -75,7 +75,7 @@ export default function Carousel({
                 {courses.map((course) => (
                     <Box key={course.id} className="courseCard" onClick={() => handleVideoClick(course.url)}>
                         <Box className="content">
-                            <IconButton onClick={(e) => handleFavoriteClick(e, course.id)} sx={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}>
+                            <IconButton onClick={(e) => handleFavoriteClick(e, course.id)} sx={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }} aria-label="add to favorites">
                                 {isFavorite(course.id) ? <Favorite color="error" /> : <Favorite color="disabled" />}
                             </IconButton>
                             <Typography variant="h6" component="div">
