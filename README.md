@@ -45,5 +45,5 @@ The application uses the `useEffect` hook to filter the courses based on the sel
 ## Things I wanted to implement
 
 - [ ] Fetch video thumbnail from youtube
-- [ ] Implement a better UI
+- [ ] Implement a better UI for courses carousel
 - [ ] Persist selected skills and favourites in db in a separate table similar to user preferences
