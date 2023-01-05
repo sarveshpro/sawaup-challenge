@@ -9,7 +9,6 @@ import Carousel from '../Components/Carousel';
 const drawerWidth = 280;
 
 // TODO: Get video thumbnail from youtube url
-// TODO: allow add to favorites
 
 interface Props {
   courses: Sawaup.Course[];
@@ -22,6 +21,7 @@ export default function Home({ courses, skills }: Props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [selectedSkills, setSelectedSkills] = React.useState<number[]>([]);
   const [filteredCourses, setFilteredCourses] = React.useState<Sawaup.Course[]>([]);
+  const [favouriteCourseIds, setFavouriteCourseIds] = React.useState<number[]>([]);
 
   // filter courses based on selected skills
   // each course has a list of skills
@@ -144,16 +144,22 @@ export default function Home({ courses, skills }: Props) {
       >
 
         <Typography variant="h4" gutterBottom component="div">
-          Customized Courses
+          Courses based on your skills
         </Typography>
         {filteredCourses.length === 0 ? <Typography variant="body1" gutterBottom component="div">Select minimum 2 skills to see customized courses</Typography>
           :
-          <Carousel courses={filteredCourses} />}
+          <Carousel courses={filteredCourses} favouriteCourseIds={favouriteCourseIds} setFavoriteCourseIds={setFavouriteCourseIds} />}
+        {/* <Toolbar />
+        <Typography variant="h4" gutterBottom component="div">
+          Favourite Courses
+        </Typography>
+        {favouriteCourseIds.length === 0 ? <Typography variant="body1" gutterBottom component="div">Add courses to favourite to see here</Typography> :
+          <Carousel courses={courses.filter((course) => favouriteCourseIds.includes(course.id))} favouriteCourseIds={favouriteCourseIds} setFavoriteCourseIds={setFavouriteCourseIds} />} */}
         <Toolbar />
         <Typography variant="h4" gutterBottom component="div">
-          All Courses
+          Courses Available
         </Typography>
-        <Carousel courses={courses} />
+        <Carousel courses={courses} favouriteCourseIds={favouriteCourseIds} setFavoriteCourseIds={setFavouriteCourseIds} />
 
       </Box>
     </Box>
